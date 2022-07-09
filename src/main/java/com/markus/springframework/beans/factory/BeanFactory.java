@@ -18,7 +18,7 @@ public interface BeanFactory {
      * @return 相应Bean的一个实例
      * @throws BeansException
      */
-    Object getObject(String name) throws BeansException;
+    Object getBean(String name) throws BeansException;
 
     /**
      * 根据bean的名称以及构造参数查找Bean实例
@@ -29,7 +29,7 @@ public interface BeanFactory {
      * @return 相应Bean的一个实例
      * @throws BeansException
      */
-    Object getObject(String name, Object... args) throws BeansException;
+    Object getBean(String name, Object... args) throws BeansException;
 
     /**
      * 返回指定 bean 的一个实例，该实例可以是共享的，也可以是独立的。
@@ -40,7 +40,7 @@ public interface BeanFactory {
      * @return bean 的一个实例
      * @throws BeansException
      */
-    <T> T getObject(String name, Class<T> requiredType) throws BeansException;
+    <T> T getBean(String name, Class<T> requiredType) throws BeansException;
 
     /**
      * 返回指定 bean 的一个实例，该实例可以是单例的，也可以是原型的。
@@ -49,5 +49,5 @@ public interface BeanFactory {
      * @return bean 的一个实例
      * @throws BeansException
      */
-    <T> T getObject(Class<T> requiredType) throws BeansException;
+    <T> T getBean(Class<T> requiredType) throws BeansException;
 }
