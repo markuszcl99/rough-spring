@@ -8,7 +8,19 @@ package com.markus.project.service;
  * It's my honor to share what I've learned with you!
  */
 public class UserService {
-    public void queryUserInfo(){
-        System.out.println("查询用户信息");;
+
+    private String name;
+
+    public UserService() {
+        this.name = "默认构造器";
+    }
+
+    public UserService(String name) {
+        this.name = name;
+    }
+
+    public void queryUserInfo() {
+        System.out.println("查询用户信息: " + name);
+        ;
     }
 }
