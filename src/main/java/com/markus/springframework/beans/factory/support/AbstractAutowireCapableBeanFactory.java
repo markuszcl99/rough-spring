@@ -1,8 +1,12 @@
 package com.markus.springframework.beans.factory.support;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.markus.springframework.beans.BeansException;
+import com.markus.springframework.beans.factory.PropertyValue;
+import com.markus.springframework.beans.factory.PropertyValues;
 import com.markus.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import com.markus.springframework.beans.factory.config.BeanDefinition;
+import com.markus.springframework.beans.factory.config.BeanReference;
 
 import java.lang.reflect.Constructor;
 
@@ -22,6 +26,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         Object bean = null;
         try {
             bean = createBeanInstance(beanDefinition, beanName, args);
+
+            // Bean属性填充
+            applyPropertyValues(beanName, bean, beanDefinition);
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
@@ -43,5 +50,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         }
         // 使用实例化策略对指定构造器进行实例化操作
         return instantiationStrategy.instantiate(beanDefinition, beanName, constructorToUse, args);
+    }
+
+    protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
+        try {
+            PropertyValues propertyValues = beanDefinition.getPropertyValues();
+            for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {
+                String name = propertyValue.getName();
+                Object value = propertyValue.getValue();
+
+                if (value instanceof BeanReference) {
+                    BeanReference br = (BeanReference) value;
+                    value = getBean(br.getBeanName());
+                }
+                // 使用hutool-all工具，通过反射将字段设置到实例中
+                BeanUtil.setFieldValue(bean, name, value);
+            }
+        } catch (Exception e) {
+            throw new BeansException("Error setting property values: " + beanName);
+        }
     }
 }
