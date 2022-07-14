@@ -1,5 +1,7 @@
 package com.markus.project.service;
 
+import com.markus.project.repository.UserDao;
+
 /**
  * @author: markus
  * @date: 2022/7/9 8:35 下午
@@ -11,6 +13,8 @@ public class UserService {
 
     private String name;
 
+    private UserDao userDao;
+
     public UserService() {
         this.name = "默认构造器";
     }
@@ -20,7 +24,6 @@ public class UserService {
     }
 
     public void queryUserInfo() {
-        System.out.println("查询用户信息: " + name);
-        ;
+        System.out.println("查询用户信息: " + userDao.queryUserName(name));
     }
 }
