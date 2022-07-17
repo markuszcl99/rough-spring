@@ -5,6 +5,7 @@ import com.markus.springframework.beans.factory.config.BeanDefinition;
 import com.markus.springframework.beans.factory.config.BeanPostProcessor;
 import com.markus.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,7 +32,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     }
 
     @Override
-    protected BeanDefinition getBeanDefinition(String beanName) throws BeansException {
+    public BeanDefinition getBeanDefinition(String beanName) throws BeansException {
         BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
         if (beanDefinition == null) {
             throw new BeansException("No bean named '" + beanName + "' is defined");
@@ -46,7 +47,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
     @Override
     public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
-        return null;
+        Map<String, T> result = new HashMap<>();
+        beanDefinitionMap.forEach((beanName, beanDefinition) -> {
+            Class<T> beanClass = beanDefinition.getBeanClass();
+            if (type.isAssignableFrom(beanClass)) {
+                result.put(beanName, (T) getBean(beanName));
+            }
+        });
+        return result;
     }
 
     @Override
@@ -56,11 +64,6 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
     @Override
     public void preInstantiateSingletons() {
-
-    }
-
-    @Override
-    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
 
     }
 }

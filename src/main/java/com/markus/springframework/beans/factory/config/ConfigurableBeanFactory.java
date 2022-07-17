@@ -10,4 +10,5 @@ import com.markus.springframework.beans.factory.HierarchicalBeanFactory;
  * It's my honor to share what I've learned with you!
  */
 public interface ConfigurableBeanFactory extends HierarchicalBeanFactory {
+    void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 }
