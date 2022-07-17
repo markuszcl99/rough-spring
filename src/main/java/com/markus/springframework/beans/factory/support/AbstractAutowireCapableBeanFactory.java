@@ -6,6 +6,7 @@ import com.markus.springframework.beans.factory.PropertyValue;
 import com.markus.springframework.beans.factory.PropertyValues;
 import com.markus.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import com.markus.springframework.beans.factory.config.BeanDefinition;
+import com.markus.springframework.beans.factory.config.BeanPostProcessor;
 import com.markus.springframework.beans.factory.config.BeanReference;
 
 import java.lang.reflect.Constructor;
@@ -29,12 +30,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
             // Bean属性填充
             applyPropertyValues(beanName, bean, beanDefinition);
+
+            // 执行Bean的初始化方法和BeanPostProcessor的前置和后置处理方法以及用户自定义方法init-method
+            bean = initializeBean(beanName, bean, beanDefinition);
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
         addSingleton(beanName, bean);
         return bean;
     }
+
+    public InstantiationStrategy setInstantiationStrategy() {
+        return instantiationStrategy;
+    }
+
+    public void setInstantiationStrategy(InstantiationStrategy instantiationStrategy) {
+        this.instantiationStrategy = instantiationStrategy;
+    }
+
 
     protected Object createBeanInstance(BeanDefinition beanDefinition, String beanName, Object[] args) {
         Constructor constructorToUse = null;
@@ -69,5 +82,44 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         } catch (Exception e) {
             throw new BeansException("Error setting property values: " + beanName);
         }
+    }
+
+    private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        //1. 执行BeanPostProcessor Before处理
+        Object wrappedBean = applyBeanPostProcessorBeforeInitialization(bean, beanName);
+
+        //2. 调用用户自定义方法
+        invokeInitMethod(beanName, bean, beanDefinition);
+
+        //3. 执行BeanPostProcessor After处理
+        wrappedBean = applyBeanPostProcessorAfterInitialization(bean, beanName);
+
+        return wrappedBean;
+    }
+
+    @Override
+    public Object applyBeanPostProcessorBeforeInitialization(Object existingBean, String beanName) throws BeansException {
+        Object result = existingBean;
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            Object current = beanPostProcessor.postProcessBeforeInitialization(result, beanName);
+            if (null == current) return result;
+            result = current;
+        }
+        return result;
+    }
+
+    private void invokeInitMethod(String beanName, Object wrappedBean, BeanDefinition beanDefinition) {
+
+    }
+
+    @Override
+    public Object applyBeanPostProcessorAfterInitialization(Object existingBean, String beanName) throws BeansException {
+        Object result = existingBean;
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            Object current = beanPostProcessor.postProcessAfterInitialization(result, beanName);
+            if (null == current) return result;
+            result = current;
+        }
+        return result;
     }
 }

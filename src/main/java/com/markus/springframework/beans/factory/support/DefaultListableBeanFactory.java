@@ -2,6 +2,8 @@ package com.markus.springframework.beans.factory.support;
 
 import com.markus.springframework.beans.BeansException;
 import com.markus.springframework.beans.factory.config.BeanDefinition;
+import com.markus.springframework.beans.factory.config.BeanPostProcessor;
+import com.markus.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Blog: http://markuszhang.com/
  * It's my honor to share what I've learned with you!
  */
-public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry {
+public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry, ConfigurableListableBeanFactory {
 
     /*Bean的容器*/
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
@@ -40,5 +42,25 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     @Override
     public <T> T getBean(Class<T> requiredType) throws BeansException {
         return null;
+    }
+
+    @Override
+    public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
+        return null;
+    }
+
+    @Override
+    public String[] getBeanDefinitionNames() {
+        return new String[0];
+    }
+
+    @Override
+    public void preInstantiateSingletons() {
+
+    }
+
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
+
     }
 }

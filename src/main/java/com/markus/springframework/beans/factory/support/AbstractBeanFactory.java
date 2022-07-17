@@ -2,7 +2,11 @@ package com.markus.springframework.beans.factory.support;
 
 import com.markus.springframework.beans.BeansException;
 import com.markus.springframework.beans.factory.config.BeanDefinition;
+import com.markus.springframework.beans.factory.config.BeanPostProcessor;
 import com.markus.springframework.beans.factory.config.ConfigurableBeanFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: markus
@@ -12,6 +16,10 @@ import com.markus.springframework.beans.factory.config.ConfigurableBeanFactory;
  * It's my honor to share what I've learned with you!
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+
+    /*BeanPostProcessor缓存，用于createBean*/
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
+
     @Override
     public Object getBean(String name) throws BeansException {
         // 先去单例容器中查找相应名称的单例bean
@@ -40,5 +48,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     @Override
     public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
         return null;
+    }
+
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return this.beanPostProcessors;
     }
 }
