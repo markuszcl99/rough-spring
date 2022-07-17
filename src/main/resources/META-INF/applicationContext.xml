@@ -4,5 +4,9 @@
     <bean id="userService" class="com.markus.project.service.UserService">
         <property name="name" value="10001"/>
         <property name="userDao" ref="userDao"/>
+        <property name="company" value="YoYi"/>
+        <property name="location" value="菏泽"/>
     </bean>
+    <bean class="com.markus.project.common.MyBeanPostProcessor"/>
+    <bean class="com.markus.project.common.MyBeanFactoryProcessor"/>
 </beans>
