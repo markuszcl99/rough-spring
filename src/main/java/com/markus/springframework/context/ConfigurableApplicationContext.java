@@ -9,10 +9,21 @@ import com.markus.springframework.beans.BeansException;
  * @Blog: http://markuszhang.com/doc-blog
  * It's my honor to share what I've learned with you!
  */
-public interface ConfigurableApplicationContext extends ApplicationContext{
+public interface ConfigurableApplicationContext extends ApplicationContext {
     /**
      * 刷新容器-spring框架的核心接口
+     *
      * @throws BeansException
      */
     void refresh() throws BeansException;
+
+    /**
+     * 注册虚拟机关闭钩子
+     */
+    void registerShutdownHook();
+
+    /**
+     * 手动关闭容器的方法
+     */
+    void close();
 }

@@ -2,6 +2,7 @@ package com.markus.project.service;
 
 import com.markus.project.repository.UserDao;
 import com.markus.springframework.beans.BeansException;
+import com.markus.springframework.beans.factory.DisposableBean;
 import com.markus.springframework.beans.factory.InitializingBean;
 
 /**
@@ -11,7 +12,7 @@ import com.markus.springframework.beans.factory.InitializingBean;
  * @Blog: http://markuszhang.com/doc-blog/
  * It's my honor to share what I've learned with you!
  */
-public class UserService implements InitializingBean {
+public class UserService implements InitializingBean, DisposableBean {
 
     private String name;
 
@@ -65,10 +66,6 @@ public class UserService implements InitializingBean {
         this.location = location;
     }
 
-    public void customInitMethod() {
-        System.out.println("init-method update location field from [" + this.location + "]" + " to [北京顺义]");
-        this.setLocation("北京顺义");
-    }
     @Override
     public String toString() {
         return "UserService{" +
@@ -82,5 +79,18 @@ public class UserService implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws BeansException {
         System.out.println("InitializingBean#afterPropertiesSet方法执行");
+    }
+
+    public void customInitMethod() {
+        System.out.println("UserService#customInitMethod方法执行");
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("DisposableBean#destroy方法执行");
+    }
+
+    public void customDestroyMethod(){
+        System.out.println("UserService#customDestroyMethod方法执行");
     }
 }

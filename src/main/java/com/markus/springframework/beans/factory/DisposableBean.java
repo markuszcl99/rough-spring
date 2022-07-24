@@ -10,5 +10,5 @@ import com.markus.springframework.beans.BeansException;
  * It's my honor to share what I've learned with you!
  */
 public interface DisposableBean {
-    void destroy() throws BeansException;
+    void destroy() throws Exception;
 }

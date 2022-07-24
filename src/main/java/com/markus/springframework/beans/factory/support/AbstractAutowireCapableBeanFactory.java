@@ -3,6 +3,7 @@ package com.markus.springframework.beans.factory.support;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.markus.springframework.beans.BeansException;
+import com.markus.springframework.beans.factory.DisposableBean;
 import com.markus.springframework.beans.factory.InitializingBean;
 import com.markus.springframework.beans.factory.PropertyValue;
 import com.markus.springframework.beans.factory.PropertyValues;
@@ -40,8 +41,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
+
+        // 注册实现了DisposableBean接口的Bean对象
+        registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
+
+        // 添加单例对象到单例缓存中
         addSingleton(beanName, bean);
         return bean;
+    }
+
+    private void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        if (bean instanceof DisposableBean || StrUtil.isNotEmpty(beanDefinition.getDestroyMethodName())) {
+            registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
+        }
     }
 
     public InstantiationStrategy setInstantiationStrategy() {

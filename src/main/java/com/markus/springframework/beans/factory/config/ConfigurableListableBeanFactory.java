@@ -22,4 +22,6 @@ public interface ConfigurableListableBeanFactory extends ListableBeanFactory, Co
      * 提前初始化所有单例Bean对象
      */
     void preInstantiateSingletons();
+
+    void destroySingletons();
 }
