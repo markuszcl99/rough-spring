@@ -27,3 +27,10 @@ BeanFactory接口的扩展，可以枚举其所有Bean实例的Bean工厂实现�
 #### ConfigurableBeanFactory
 
 大多数Bean工厂要实现的接口，除了BeanFactory接口中的客户端方法，还提供了配置配工厂的工具，但是这并不意味着在正常的应用程序代码中使用，如果要使用Bean工厂，需要坚持使用BeanFactory或者ListableBeanFactory来满足典型的需求，这个扩展接口只是为了允许框架内部的即插即用和对Bean工厂配置方法的特殊访问
+
+#### ConfigurableListableBeanFactory
+
+大多数可列出的Bean工厂需要实现的接口，除了ConfigurableBeanFactory提供的功能之外，它还提供了分析和解析Bean定义的以及预实例化单例的工具
+
+#### AutowireCapableBeanFactory
+
