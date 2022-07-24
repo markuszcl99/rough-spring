@@ -1,6 +1,8 @@
 package com.markus.project.service;
 
 import com.markus.project.repository.UserDao;
+import com.markus.springframework.beans.BeansException;
+import com.markus.springframework.beans.factory.InitializingBean;
 
 /**
  * @author: markus
@@ -9,7 +11,7 @@ import com.markus.project.repository.UserDao;
  * @Blog: http://markuszhang.com/doc-blog/
  * It's my honor to share what I've learned with you!
  */
-public class UserService {
+public class UserService implements InitializingBean {
 
     private String name;
 
@@ -75,5 +77,10 @@ public class UserService {
                 ", company='" + company + '\'' +
                 ", location='" + location + '\'' +
                 '}';
+    }
+
+    @Override
+    public void afterPropertiesSet() throws BeansException {
+        System.out.println("InitializingBean#afterPropertiesSet方法执行");
     }
 }
