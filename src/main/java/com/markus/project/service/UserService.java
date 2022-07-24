@@ -2,8 +2,9 @@ package com.markus.project.service;
 
 import com.markus.project.repository.UserDao;
 import com.markus.springframework.beans.BeansException;
-import com.markus.springframework.beans.factory.DisposableBean;
-import com.markus.springframework.beans.factory.InitializingBean;
+import com.markus.springframework.beans.factory.*;
+import com.markus.springframework.context.ApplicationContext;
+import com.markus.springframework.context.ApplicationContextAware;
 
 /**
  * @author: markus
@@ -12,7 +13,7 @@ import com.markus.springframework.beans.factory.InitializingBean;
  * @Blog: http://markuszhang.com/doc-blog/
  * It's my honor to share what I've learned with you!
  */
-public class UserService implements InitializingBean, DisposableBean {
+public class UserService implements InitializingBean, DisposableBean, BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, ApplicationContextAware {
 
     private String name;
 
@@ -21,6 +22,14 @@ public class UserService implements InitializingBean, DisposableBean {
     private String company;
 
     private String location;
+
+    private String beanName;
+
+    private BeanFactory beanFactory;
+
+    private ClassLoader beanClassLoader;
+
+    private ApplicationContext applicationContext;
 
     public UserService() {
         this.name = "默认构造器";
@@ -66,6 +75,22 @@ public class UserService implements InitializingBean, DisposableBean {
         this.location = location;
     }
 
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
+    }
+
+    public ClassLoader getBeanClassLoader() {
+        return beanClassLoader;
+    }
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
     @Override
     public String toString() {
         return "UserService{" +
@@ -90,7 +115,27 @@ public class UserService implements InitializingBean, DisposableBean {
         System.out.println("DisposableBean#destroy方法执行");
     }
 
-    public void customDestroyMethod(){
+    public void customDestroyMethod() {
         System.out.println("UserService#customDestroyMethod方法执行");
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        this.beanClassLoader = classLoader;
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        this.beanName = name;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
