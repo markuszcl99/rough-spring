@@ -15,7 +15,7 @@ import org.junit.Test;
  */
 public class BeanDefinitionReaderTest {
     @Test
-    public void test_beanDefinitionReader(){
+    public void test_beanDefinitionReader() {
         // 1. 初始化BeanFactory
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
@@ -26,7 +26,7 @@ public class BeanDefinitionReaderTest {
         // 3. 依赖查找bean
         UserService userService = (UserService) beanFactory.getBean("userService");
         userService.queryUserInfo();
-
+        System.out.println(userService);
 
 
     }

@@ -63,6 +63,10 @@ public class UserService {
         this.location = location;
     }
 
+    public void customInitMethod() {
+        System.out.println("init-method update location field from [" + this.location + "]" + " to [北京顺义]");
+        this.setLocation("北京顺义");
+    }
     @Override
     public String toString() {
         return "UserService{" +

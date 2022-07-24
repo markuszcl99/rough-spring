@@ -22,4 +22,9 @@ public class UserDao {
     public String queryUserName(String userId) {
         return hashMap.get(userId);
     }
+
+    @Override
+    public String toString() {
+        return "UserDao{}";
+    }
 }

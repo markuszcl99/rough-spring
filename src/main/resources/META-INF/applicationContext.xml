@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
     <bean id="userDao" class="com.markus.project.repository.UserDao"/>
-    <bean id="userService" class="com.markus.project.service.UserService">
+    <bean id="userService" class="com.markus.project.service.UserService" init-method="customInitMethod">
         <property name="name" value="10001"/>
         <property name="userDao" ref="userDao"/>
         <property name="company" value="YoYi"/>
